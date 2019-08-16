@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Chatbox from "./Chatbox";
 import openSocket from "socket.io-client";
 import Participants from "./Participants";
+import DisplayChat from "./DisplayChat";
 
 const socket = openSocket("http://localhost:9090");
 
@@ -55,6 +56,13 @@ class Chat extends Component {
     return (
       <div>
         <Participants participants={this.state.users} />
+        {this.state.messages.map((message, index) => (
+          <DisplayChat
+            message={message}
+            currentUser={this.props.username}
+            key={index}
+          />
+        ))}
         <Chatbox
           emitMessage={this.createMessage}
           message={this.state.text}

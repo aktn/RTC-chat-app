@@ -23,7 +23,7 @@ class App extends Component {
         {!this.state.username ? (
           <NewUser emitUser={this.createUser} />
         ) : (
-          <Chat />
+          <Chat username={this.state.username} />
         )}
       </div>
     );
