@@ -1,5 +1,6 @@
 import React from "react";
 import Gify from "../bonus/Gify";
+import LinksPreview from "../bonus/LinksPreview";
 
 const DisplayChat = props => {
   const { message, currentUser, editingStatus } = props;
@@ -41,6 +42,7 @@ const DisplayChat = props => {
     <div>
       {displayMessage}
       <Gify message={message.message} />
+      <LinksPreview link={message.message} />
     </div>
   );
 };
