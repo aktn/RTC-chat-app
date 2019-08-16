@@ -17,7 +17,8 @@ class Chat extends Component {
     users: [],
     messages: [],
     text: "",
-    editingMessage: false
+    editingMessage: false,
+    showEmoji: false
   };
 
   componentDidMount() {
@@ -133,6 +134,12 @@ class Chat extends Component {
     }
   };
 
+  handleEmojiState = () => {
+    this.setState({
+      showEmoji: !this.state.showEmoji
+    });
+  };
+
   render() {
     return (
       <div>
@@ -153,6 +160,8 @@ class Chat extends Component {
           emitMessage={this.createMessage}
           message={this.state.text}
           controlMessage={this.handleMessage}
+          showEmoji={this.state.showEmoji}
+          toggleEmoji={this.handleEmojiState}
         />
       </div>
     );

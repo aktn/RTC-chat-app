@@ -1,5 +1,9 @@
 import React from "react";
 import Picker from "react-giphy-component";
+import EmojiPicker from "emoji-picker-react";
+import JSEMOJI from "emoji-js";
+
+let jsemoji = new JSEMOJI();
 
 const Chatbox = props => {
   const handleChange = event => {
@@ -16,10 +20,20 @@ const Chatbox = props => {
     }
   };
 
-  const log = gif => {
+  const handleGiphy = gif => {
     props.emitMessage(gif.original.url);
-    console.log(gif);
   };
+
+  const handleEmoji = (code, emoji) => {
+    let emojiIcon = jsemoji.replace_colons(`:${emoji.name}:`);
+    props.controlMessage(props.message + emojiIcon);
+  };
+
+  const emojiKeyboard = props.showEmoji ? (
+    <EmojiPicker onEmojiClick={handleEmoji} />
+  ) : (
+    ""
+  );
 
   return (
     <div>
@@ -29,7 +43,9 @@ const Chatbox = props => {
         value={props.message}
         placeholder="Type here ..."
       />
-      <Picker onSelected={log} />
+      <span onClick={props.toggleEmoji}>{"😍"}</span>
+      {emojiKeyboard}
+      <Picker onSelected={handleGiphy} />
     </div>
   );
 };
