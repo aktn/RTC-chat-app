@@ -3,7 +3,8 @@ import React, { Component } from "react";
 class NewUser extends Component {
   createUser = e => {
     e.preventDefault();
-    this.props.emitUser(e.target.name.value);
+    const username = e.target.name.value;
+    this.props.emitUser(username);
   };
 
   render() {
