@@ -19,10 +19,30 @@ class Chat extends Component {
         users
       }));
     });
+
     socket.on("created message", message => {
       console.log(message);
       this.setState({
         messages: [...this.state.messages, message]
+      });
+      console.log(this.state.messages);
+    });
+
+    socket.on("deleted message", messageID => {
+      const objIndex = this.state.messages.findIndex(
+        message => message.id === messageID
+      );
+      const updatedObj = {
+        ...this.state.messages[objIndex],
+        deleted: true
+      };
+
+      this.setState({
+        messages: [
+          ...this.state.messages.slice(0, objIndex),
+          updatedObj,
+          ...this.state.messages.slice(objIndex + 1)
+        ]
       });
       console.log(this.state.messages);
     });
