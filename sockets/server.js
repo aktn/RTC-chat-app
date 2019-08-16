@@ -13,6 +13,12 @@ io.on("connection", client => {
     updateUsernames();
   });
 
+  client.on("new message", message => {
+    console.log(message);
+    const data = JSON.parse(message);
+    io.emit("created message", data);
+  });
+
   client.on("disconnect", function(data) {
     if (!client.username) return;
     users.splice(users.indexOf(client.username), 1);

@@ -17,7 +17,13 @@ class Chat extends Component {
       this.setState(() => ({
         users
       }));
-      console.log(this.state.users);
+    });
+    socket.on("created message", message => {
+      console.log(message);
+      this.setState({
+        messages: [...this.state.messages, message]
+      });
+      console.log(this.state.messages);
     });
   }
 
@@ -25,11 +31,24 @@ class Chat extends Component {
     this.setState({
       text: message
     });
-    console.log(message);
   };
 
   createMessage = message => {
-    console.log(message);
+    const data = {
+      id: Math.random(),
+      username: this.props.username,
+      message: message,
+      deleted: false,
+      editing: false,
+      edited: false
+    };
+    socket.emit(
+      "new message",
+      JSON.stringify(data),
+      this.setState({
+        text: ""
+      })
+    );
   };
 
   render() {
