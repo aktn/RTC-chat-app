@@ -23,6 +23,7 @@ const DisplayChat = props => {
           ) : (
             message.message
           )}
+          {message.edited ? <span>Edited</span> : ""}
         </label>
         {message.username == currentUser ? (
           <label onClick={() => props.delete(message.id)}>✕</label>

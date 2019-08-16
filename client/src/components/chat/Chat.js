@@ -53,7 +53,8 @@ class Chat extends Component {
       const objIndex = messages.findIndex(msg => msg.id === data.id);
       const updatedObj = {
         ...messages[objIndex],
-        message: data.message
+        message: data.message,
+        edited: true
       };
 
       this.setState({
@@ -110,8 +111,7 @@ class Chat extends Component {
     const objIndex = messages.findIndex(msg => msg.id === id);
     const updatedObj = {
       ...messages[objIndex],
-      message: message,
-      edited: true
+      message: message
     };
 
     this.setState({
