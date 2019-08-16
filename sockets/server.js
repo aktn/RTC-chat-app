@@ -19,6 +19,11 @@ io.on("connection", client => {
     io.emit("created message", data);
   });
 
+  client.on("delete message", messageID => {
+    console.log("Message ID to be deleted is ", messageID);
+    io.emit("deleted message", messageID);
+  });
+
   client.on("disconnect", function(data) {
     if (!client.username) return;
     users.splice(users.indexOf(client.username), 1);

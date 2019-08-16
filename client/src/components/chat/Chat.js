@@ -52,6 +52,11 @@ class Chat extends Component {
     );
   };
 
+  deleteMessage = messageID => {
+    socket.emit("delete message", messageID);
+    console.log(messageID);
+  };
+
   render() {
     return (
       <div>
@@ -61,6 +66,7 @@ class Chat extends Component {
             message={message}
             currentUser={this.props.username}
             key={index}
+            delete={this.deleteMessage}
           />
         ))}
         <Chatbox
