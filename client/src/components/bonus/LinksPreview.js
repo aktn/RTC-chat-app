@@ -6,7 +6,7 @@ const LinksPreview = props => {
 
   const checkUrl = (link && link.match(/\b(http|https)?:\/\/\S+/gi)) || [];
 
-  const preview = checkUrl.map(link => <MicrolinkCard url={link} />);
+  const preview = checkUrl.map(url => <MicrolinkCard url={url} />);
 
   return <div>{preview}</div>;
 };

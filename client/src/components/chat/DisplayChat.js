@@ -38,11 +38,18 @@ const DisplayChat = props => {
     displayMessage = <label>Deleted</label>;
   }
 
+  let displayExtraMedia;
+  const checkGif = message.message && message.message.indexOf("giphy") > -1;
+  if (checkGif) {
+    displayExtraMedia = <Gify message={message.message} />;
+  } else {
+    displayExtraMedia = <LinksPreview link={message.message} />;
+  }
+
   return (
     <div>
       {displayMessage}
-      <Gify message={message.message} />
-      <LinksPreview link={message.message} />
+      {displayExtraMedia}
     </div>
   );
 };
