@@ -3,6 +3,7 @@ import Chatbox from "./Chatbox";
 import openSocket from "socket.io-client";
 import Participants from "./Participants";
 import DisplayChat from "./DisplayChat";
+import { getParticipants } from "../../socketManager";
 
 const socket = openSocket("http://localhost:9090");
 
@@ -15,11 +16,11 @@ class Chat extends Component {
   };
 
   componentDidMount() {
-    socket.on("get users", users => {
+    getParticipants(users =>
       this.setState(() => ({
         users
-      }));
-    });
+      }))
+    );
 
     socket.on("created message", message => {
       console.log(message);

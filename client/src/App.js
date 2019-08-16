@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import "./App.scss";
 import NewUser from "./components/user/NewUser";
 import Chat from "./components/chat/Chat";
-import openSocket from "socket.io-client";
-
-const socket = openSocket("http://localhost:9090");
+import { addNewUser } from "./socketManager";
 
 class App extends Component {
   state = {
@@ -12,9 +10,9 @@ class App extends Component {
   };
 
   createUser = username => {
-    socket.emit("new user", username);
-    this.setState({ username });
-    console.log(username);
+    // socket.emit("new user", username);
+    // this.setState({ username });
+    addNewUser(username, this.setState({ username }));
   };
 
   render() {
