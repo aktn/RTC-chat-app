@@ -1,9 +1,9 @@
 import React from "react";
+import Picker from "react-giphy-component";
 
 const Chatbox = props => {
   const handleChange = event => {
     props.controlMessage(event.target.value);
-    console.log("this is ej");
   };
 
   const messageHandler = event => {
@@ -16,6 +16,11 @@ const Chatbox = props => {
     }
   };
 
+  const log = gif => {
+    props.emitMessage(gif.original.url);
+    console.log(gif);
+  };
+
   return (
     <div>
       <input
@@ -24,6 +29,7 @@ const Chatbox = props => {
         value={props.message}
         placeholder="Type here ..."
       />
+      <Picker onSelected={log} />
     </div>
   );
 };

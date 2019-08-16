@@ -1,4 +1,5 @@
 import React from "react";
+import Gify from "../bonus/Gify";
 
 const DisplayChat = props => {
   const { message, currentUser, editingStatus } = props;
@@ -36,7 +37,12 @@ const DisplayChat = props => {
     displayMessage = <label>Deleted</label>;
   }
 
-  return <div>{displayMessage}</div>;
+  return (
+    <div>
+      {displayMessage}
+      <Gify message={message.message} />
+    </div>
+  );
 };
 
 export default DisplayChat;
