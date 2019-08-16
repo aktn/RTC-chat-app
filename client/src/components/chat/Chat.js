@@ -10,7 +10,8 @@ class Chat extends Component {
   state = {
     users: [],
     messages: [],
-    text: ""
+    text: "",
+    editingMessage: false
   };
 
   componentDidMount() {
@@ -29,19 +30,37 @@ class Chat extends Component {
     });
 
     socket.on("deleted message", messageID => {
-      const objIndex = this.state.messages.findIndex(
-        message => message.id === messageID
-      );
+      const { messages } = this.state;
+
+      const objIndex = messages.findIndex(message => message.id === messageID);
       const updatedObj = {
-        ...this.state.messages[objIndex],
+        ...messages[objIndex],
         deleted: true
       };
 
       this.setState({
         messages: [
-          ...this.state.messages.slice(0, objIndex),
+          ...messages.slice(0, objIndex),
           updatedObj,
-          ...this.state.messages.slice(objIndex + 1)
+          ...messages.slice(objIndex + 1)
+        ]
+      });
+    });
+
+    socket.on("updated message", data => {
+      const { messages } = this.state;
+
+      const objIndex = messages.findIndex(msg => msg.id === data.id);
+      const updatedObj = {
+        ...messages[objIndex],
+        message: data.message
+      };
+
+      this.setState({
+        messages: [
+          ...messages.slice(0, objIndex),
+          updatedObj,
+          ...messages.slice(objIndex + 1)
         ]
       });
       console.log(this.state.messages);
@@ -60,7 +79,6 @@ class Chat extends Component {
       username: this.props.username,
       message: message,
       deleted: false,
-      editing: false,
       edited: false
     };
     socket.emit(
@@ -77,6 +95,42 @@ class Chat extends Component {
     console.log(messageID);
   };
 
+  handleEditing = () => {
+    this.setState({
+      editingMessage: true
+    });
+    console.log(this.state.editingMessage);
+  };
+
+  editMessage = (event, id) => {
+    const message = event.target.value;
+    console.log("Edit" + message + id);
+    const { messages } = this.state;
+
+    const objIndex = messages.findIndex(msg => msg.id === id);
+    const updatedObj = {
+      ...messages[objIndex],
+      message: message,
+      edited: true
+    };
+
+    this.setState({
+      messages: [
+        ...messages.slice(0, objIndex),
+        updatedObj,
+        ...messages.slice(objIndex + 1)
+      ]
+    });
+  };
+
+  handleEdit = (e, id) => {
+    if (e.keyCode == 13) {
+      const message = e.target.value;
+      socket.emit("edit message", id, message);
+      console.log("it works");
+    }
+  };
+
   render() {
     return (
       <div>
@@ -87,6 +141,10 @@ class Chat extends Component {
             currentUser={this.props.username}
             key={index}
             delete={this.deleteMessage}
+            editingStatus={this.state.editingMessage}
+            handleEditing={this.handleEditing}
+            changed={event => this.editMessage(event, message.id)}
+            keyHandler={event => this.handleEdit(event, message.id)}
           />
         ))}
         <Chatbox

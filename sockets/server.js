@@ -19,6 +19,11 @@ io.on("connection", client => {
     io.emit("created message", data);
   });
 
+  client.on("edit message", (id, message) => {
+    console.log("Message ID to be updated is ", message);
+    io.emit("updated message", { id: id, message: message });
+  });
+
   client.on("delete message", messageID => {
     console.log("Message ID to be deleted is ", messageID);
     io.emit("deleted message", messageID);
