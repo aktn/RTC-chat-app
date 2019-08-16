@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import Chatbox from "./Chatbox";
 import openSocket from "socket.io-client";
+import Participants from "./Participants";
 
 const socket = openSocket("http://localhost:9090");
 
 class Chat extends Component {
   state = {
+    users: [],
     messages: [],
     text: ""
   };
@@ -13,9 +15,9 @@ class Chat extends Component {
   componentDidMount() {
     socket.on("get users", users => {
       this.setState(() => ({
-        users: users
+        users
       }));
-      console.log(users);
+      console.log(this.state.users);
     });
   }
 
@@ -33,7 +35,7 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        Chat component
+        <Participants participants={this.state.users} />
         <Chatbox
           emitMessage={this.createMessage}
           message={this.state.text}
