@@ -17,8 +17,8 @@ const DisplayChat = props => {
             <input
               type="text"
               value={message.message}
-              onChange={props.changed}
-              onKeyDown={props.keyHandler}
+              onChange={props.changedValue}
+              onKeyDown={props.onPressEnter}
             />
           ) : (
             message.message

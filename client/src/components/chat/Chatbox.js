@@ -8,9 +8,11 @@ const Chatbox = props => {
 
   const messageHandler = event => {
     if (event.keyCode === 13) {
+      let value = event.target.value;
+      if (!value) return;
       event.preventDefault();
-      props.emitMessage(event.target.value);
-      event.target.value = "";
+      props.emitMessage(value);
+      value = "";
     }
   };
 

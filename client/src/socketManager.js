@@ -24,10 +24,25 @@ const broadcastEditedMessage = (messageID, message) => {
   socket.emit("edit message", messageID, message);
 };
 
+const getCreatedMessage = callback => {
+  socket.on("created message", message => callback(message));
+};
+
+const getDeletedMessage = callback => {
+  socket.on("deleted message", message => callback(message));
+};
+
+const getEditedMessage = callback => {
+  socket.on("updated message", message => callback(message));
+};
+
 export {
   addNewUser,
   getParticipants,
   braodcastCreatedMessage,
   broadcastDeletedMessage,
-  broadcastEditedMessage
+  broadcastEditedMessage,
+  getCreatedMessage,
+  getDeletedMessage,
+  getEditedMessage
 };

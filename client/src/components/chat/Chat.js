@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import Chatbox from "./Chatbox";
-import openSocket from "socket.io-client";
 import Participants from "./Participants";
 import DisplayChat from "./DisplayChat";
 import {
   getParticipants,
   braodcastCreatedMessage,
   broadcastDeletedMessage,
-  broadcastEditedMessage
+  broadcastEditedMessage,
+  getCreatedMessage,
+  getDeletedMessage,
+  getEditedMessage
 } from "../../socketManager";
-
-const socket = openSocket("http://localhost:9090");
 
 class Chat extends Component {
   state = {
@@ -27,15 +27,13 @@ class Chat extends Component {
       }))
     );
 
-    socket.on("created message", message => {
-      console.log(message);
-      this.setState({
+    getCreatedMessage(message =>
+      this.setState(() => ({
         messages: [...this.state.messages, message]
-      });
-      console.log(this.state.messages);
-    });
+      }))
+    );
 
-    socket.on("deleted message", messageID => {
+    getDeletedMessage(messageID => {
       const { messages } = this.state;
 
       const objIndex = messages.findIndex(message => message.id === messageID);
@@ -44,16 +42,16 @@ class Chat extends Component {
         deleted: true
       };
 
-      this.setState({
+      this.setState(() => ({
         messages: [
           ...messages.slice(0, objIndex),
           updatedObj,
           ...messages.slice(objIndex + 1)
         ]
-      });
+      }));
     });
 
-    socket.on("updated message", data => {
+    getEditedMessage(data => {
       const { messages } = this.state;
 
       const objIndex = messages.findIndex(msg => msg.id === data.id);
@@ -80,7 +78,7 @@ class Chat extends Component {
     });
   };
 
-  _createMessage = message => {
+  createMessage = message => {
     const data = {
       id: Math.random(),
       username: this.props.username,
@@ -96,7 +94,7 @@ class Chat extends Component {
     );
   };
 
-  _deleteMessage = messageID => {
+  deleteMessage = messageID => {
     broadcastDeletedMessage(messageID);
   };
 
@@ -107,7 +105,7 @@ class Chat extends Component {
     console.log(this.state.editingMessage);
   };
 
-  _editMessage = (event, id) => {
+  editMessage = (event, id) => {
     const message = event.target.value;
     console.log("Edit" + message + id);
     const { messages } = this.state;
@@ -127,12 +125,11 @@ class Chat extends Component {
     });
   };
 
-  handleEdit = (e, id) => {
+  handleUpdate = (e, id) => {
     if (e.keyCode == 13) {
       const message = e.target.value;
+      if (!message) return;
       broadcastEditedMessage(id, message);
-      //socket.emit("edit message", id, message);
-      console.log("it works");
     }
   };
 
@@ -145,15 +142,15 @@ class Chat extends Component {
             message={message}
             currentUser={this.props.username}
             key={index}
-            delete={this._deleteMessage}
+            delete={this.deleteMessage}
             editingStatus={this.state.editingMessage}
             handleEditing={this.handleEditing}
-            changed={event => this._editMessage(event, message.id)}
-            keyHandler={event => this.handleEdit(event, message.id)}
+            changedValue={event => this.editMessage(event, message.id)}
+            onPressEnter={event => this.handleUpdate(event, message.id)}
           />
         ))}
         <Chatbox
-          emitMessage={this._createMessage}
+          emitMessage={this.createMessage}
           message={this.state.text}
           controlMessage={this.handleMessage}
         />
