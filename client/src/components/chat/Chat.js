@@ -3,7 +3,12 @@ import Chatbox from "./Chatbox";
 import openSocket from "socket.io-client";
 import Participants from "./Participants";
 import DisplayChat from "./DisplayChat";
-import { getParticipants } from "../../socketManager";
+import {
+  getParticipants,
+  braodcastCreatedMessage,
+  broadcastDeletedMessage,
+  broadcastEditedMessage
+} from "../../socketManager";
 
 const socket = openSocket("http://localhost:9090");
 
@@ -75,7 +80,7 @@ class Chat extends Component {
     });
   };
 
-  createMessage = message => {
+  _createMessage = message => {
     const data = {
       id: Math.random(),
       username: this.props.username,
@@ -83,8 +88,7 @@ class Chat extends Component {
       deleted: false,
       edited: false
     };
-    socket.emit(
-      "new message",
+    braodcastCreatedMessage(
       JSON.stringify(data),
       this.setState({
         text: ""
@@ -92,9 +96,8 @@ class Chat extends Component {
     );
   };
 
-  deleteMessage = messageID => {
-    socket.emit("delete message", messageID);
-    console.log(messageID);
+  _deleteMessage = messageID => {
+    broadcastDeletedMessage(messageID);
   };
 
   handleEditing = () => {
@@ -104,7 +107,7 @@ class Chat extends Component {
     console.log(this.state.editingMessage);
   };
 
-  editMessage = (event, id) => {
+  _editMessage = (event, id) => {
     const message = event.target.value;
     console.log("Edit" + message + id);
     const { messages } = this.state;
@@ -127,7 +130,8 @@ class Chat extends Component {
   handleEdit = (e, id) => {
     if (e.keyCode == 13) {
       const message = e.target.value;
-      socket.emit("edit message", id, message);
+      broadcastEditedMessage(id, message);
+      //socket.emit("edit message", id, message);
       console.log("it works");
     }
   };
@@ -141,15 +145,15 @@ class Chat extends Component {
             message={message}
             currentUser={this.props.username}
             key={index}
-            delete={this.deleteMessage}
+            delete={this._deleteMessage}
             editingStatus={this.state.editingMessage}
             handleEditing={this.handleEditing}
-            changed={event => this.editMessage(event, message.id)}
+            changed={event => this._editMessage(event, message.id)}
             keyHandler={event => this.handleEdit(event, message.id)}
           />
         ))}
         <Chatbox
-          emitMessage={this.createMessage}
+          emitMessage={this._createMessage}
           message={this.state.text}
           controlMessage={this.handleMessage}
         />

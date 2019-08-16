@@ -11,4 +11,23 @@ const getParticipants = callback => {
   socket.on("get users", users => callback(users));
 };
 
-export { addNewUser, getParticipants };
+// Broadcasting Messages
+const braodcastCreatedMessage = data => {
+  socket.emit("new message", data);
+};
+
+const broadcastDeletedMessage = messageID => {
+  socket.emit("delete message", messageID);
+};
+
+const broadcastEditedMessage = (messageID, message) => {
+  socket.emit("edit message", messageID, message);
+};
+
+export {
+  addNewUser,
+  getParticipants,
+  braodcastCreatedMessage,
+  broadcastDeletedMessage,
+  broadcastEditedMessage
+};
