@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.scss";
 import NewUser from "./components/user/NewUser";
+import Chat from "./components/chat/Chat";
 
 class App extends Component {
   state = {
@@ -15,7 +16,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NewUser emitUser={this.createUser} />
+        {!this.state.username ? (
+          <NewUser emitUser={this.createUser} />
+        ) : (
+          <Chat />
+        )}
       </div>
     );
   }

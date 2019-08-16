@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import openSocket from "socket.io-client";
-
-const socket = openSocket("http://localhost:9090");
 
 class NewUser extends Component {
   createUser = e => {
