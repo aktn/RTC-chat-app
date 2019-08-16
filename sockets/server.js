@@ -13,6 +13,14 @@ io.on("connection", client => {
     updateUsernames();
   });
 
+  client.on("disconnect", function(data) {
+    if (!client.username) return;
+    users.splice(users.indexOf(client.username), 1);
+    updateUsernames();
+    connections.splice(connections.indexOf(client), 1);
+    console.log("Disconnected");
+  });
+
   updateUsernames = () => {
     io.emit("get users", users);
     console.log(users);
