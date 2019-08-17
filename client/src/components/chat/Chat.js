@@ -103,7 +103,7 @@ class Chat extends Component {
 
   handleEditing = () => {
     this.setState({
-      editingMessage: true
+      editingMessage: !this.state.editingMessage
     });
     console.log(this.state.editingMessage);
   };
@@ -133,6 +133,9 @@ class Chat extends Component {
       const message = e.target.value;
       if (!message) return;
       broadcastEditedMessage(id, message);
+      this.setState({
+        editingMessage: !this.state.editingMessage
+      });
     }
   };
 
@@ -153,18 +156,20 @@ class Chat extends Component {
       <div className="chat">
         <Participants participants={this.state.users} />
         <div className="chat__panel">
-          {this.state.messages.map((message, index) => (
-            <DisplayChat
-              message={message}
-              currentUser={this.props.username}
-              key={index}
-              delete={this.deleteMessage}
-              editingStatus={this.state.editingMessage}
-              handleEditing={this.handleEditing}
-              changedValue={event => this.editMessage(event, message.id)}
-              onPressEnter={event => this.handleUpdate(event, message.id)}
-            />
-          ))}
+          <div className="display-chat">
+            {this.state.messages.map((message, index) => (
+              <DisplayChat
+                message={message}
+                currentUser={this.props.username}
+                key={index}
+                delete={this.deleteMessage}
+                editingStatus={this.state.editingMessage}
+                handleEditing={this.handleEditing}
+                changedValue={event => this.editMessage(event, message.id)}
+                onPressEnter={event => this.handleUpdate(event, message.id)}
+              />
+            ))}
+          </div>
           <Chatbox
             emitMessage={this.createMessage}
             message={this.state.text}

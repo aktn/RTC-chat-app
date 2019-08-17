@@ -1,8 +1,24 @@
 .chat {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  min-height: 100vh;
   &__panel {
-    flex: 2;
-    background-color: red;
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(25, 39, 52);
+    height: 550px;
+    .display-chat {
+      flex: 4;
+      max-height: 100vh;
+      overflow-y: scroll;
+    }
+    @media screen and (min-width: 768px) {
+      flex: 2;
+      margin: 50px 50px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
   }
 }

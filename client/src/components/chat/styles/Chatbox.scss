@@ -1,0 +1,56 @@
+.chatbox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-left: 10px;
+  input {
+    border: 0;
+    font-size: 15px;
+    color: #fff;
+    padding: 10px 15px;
+    outline: 0;
+    background: transparent;
+    width: 90%;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #d1deeb;
+    resize: none;
+    display: block;
+    @media screen and (min-width: 768px) {
+      font-size: 18px;
+      width: 80%;
+    }
+  }
+  .emojiKeyboard {
+    position: absolute;
+    top: 670px;
+    right: 50px;
+    cursor: pointer;
+    @media screen and (min-width: 768px) {
+      top: 540px;
+      right: 120px;
+    }
+  }
+  .gifSelection {
+    position: absolute;
+    top: 675px;
+    right: 20px;
+    padding: 1px;
+    color: grey;
+    font-size: 11px;
+    border: 1px solid grey;
+    cursor: pointer;
+    @media screen and (min-width: 768px) {
+      top: 545px;
+      right: 90px;
+    }
+  }
+  .test {
+    position: absolute;
+    top: 300px;
+    right: 30px;
+    @media screen and (min-width: 768px) {
+      top: 170px;
+      right: 100px;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import Picker from "react-giphy-component";
 import EmojiPicker from "emoji-picker-react";
 import JSEMOJI from "emoji-js";
+import "./styles/Chatbox.scss";
 
 let jsemoji = new JSEMOJI();
 
@@ -22,6 +23,7 @@ const Chatbox = props => {
 
   const handleGiphy = gif => {
     props.emitMessage(gif.original.url);
+    props.toggleGiphy();
   };
 
   const handleEmoji = (code, emoji) => {
@@ -30,7 +32,9 @@ const Chatbox = props => {
   };
 
   const emojiKeyboard = props.showEmoji ? (
-    <EmojiPicker onEmojiClick={handleEmoji} />
+    <div className="test">
+      <EmojiPicker onEmojiClick={handleEmoji} />
+    </div>
   ) : (
     ""
   );
@@ -42,16 +46,20 @@ const Chatbox = props => {
   );
 
   return (
-    <div>
+    <div className="chatbox">
       <input
         onChange={handleChange}
         onKeyDown={messageHandler}
         value={props.message}
         placeholder="Type here ..."
       />
-      <span onClick={props.toggleEmoji}>{"😍"}</span>
+      <span className="emojiKeyboard" onClick={props.toggleEmoji}>
+        {"😍"}
+      </span>
       {emojiKeyboard}
-      <span onClick={props.toggleGiphy}>{"Gif"}</span>
+      <span className="gifSelection" onClick={props.toggleGiphy}>
+        {"Gif"}
+      </span>
       {giphySelection}
     </div>
   );

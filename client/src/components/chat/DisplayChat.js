@@ -1,6 +1,7 @@
 import React from "react";
 import Gify from "../bonus/Gify";
 import LinksPreview from "../bonus/LinksPreview";
+import "./styles/DisplayChat.scss";
 
 const DisplayChat = props => {
   const { message, currentUser, editingStatus } = props;
@@ -13,8 +14,8 @@ const DisplayChat = props => {
   if (!message.deleted) {
     displayMessage = (
       <label>
-        {message.username}:
-        <label onDoubleClick={handleDoubleClick}>
+        <span>{message.username} : </span>
+        <label onDoubleClick={handleDoubleClick} className="message">
           {editingStatus ? (
             <input
               type="text"
@@ -22,20 +23,31 @@ const DisplayChat = props => {
               onChange={props.changedValue}
               onKeyDown={props.onPressEnter}
             />
+          ) : message.message.indexOf("https") > -1 ? (
+            ""
           ) : (
             message.message
           )}
-          {message.edited ? <span>Edited</span> : ""}
         </label>
         {message.username == currentUser ? (
-          <label onClick={() => props.delete(message.id)}>✕</label>
+          <label
+            className="deleteIcon"
+            onClick={() => props.delete(message.id)}
+          >
+            ✕
+          </label>
         ) : (
           ""
         )}
+        {message.edited ? <span className="edited">Edited</span> : ""}
       </label>
     );
   } else {
-    displayMessage = <label>Deleted</label>;
+    displayMessage = (
+      <label className="deleted">
+        <span>{message.username} : </span>Deleted
+      </label>
+    );
   }
 
   let displayExtraMedia;
@@ -47,9 +59,11 @@ const DisplayChat = props => {
   }
 
   return (
-    <div>
-      {displayMessage}
-      {displayExtraMedia}
+    <div className="displayChat">
+      <div className="displayChat__wrapper">
+        {displayMessage}
+        {displayExtraMedia}
+      </div>
     </div>
   );
 };

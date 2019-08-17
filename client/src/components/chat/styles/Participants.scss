@@ -1,25 +1,54 @@
 .participants {
   flex: 1;
   background-color: rgb(25, 39, 52);
-  margin: 100px;
+  margin: 0px;
   color: #fff;
   h3 {
-    padding: 0px 50px;
+    display: none;
     font-family: var(--main-font);
   }
   &__list {
-    padding: 50px 50px;
+    padding: 0px 10px;
     list-style: none;
-    border-top: 1px solid rgb(56, 68, 77);
   }
   .participant {
+    display: inline-block;
     padding-bottom: 20px;
+    padding-right: 45px;
     &__name {
-      font-size: 22px;
+      font-size: 16px;
+      text-align: center;
     }
     &__icon {
-      padding-right: 15px;
-      font-size: 40px;
+      font-size: 30px;
+      display: block;
     }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .participants {
+    min-height: 450px;
+    max-height: 500px;
+    h3 {
+      padding: 0px 50px;
+      display: block;
+    }
+    &__list {
+      padding: 50px 50px;
+      border-top: 1px solid rgb(56, 68, 77);
+    }
+    .participant {
+      &__name {
+        font-size: 22px;
+      }
+      &__icon {
+        padding-right: 15px;
+        font-size: 40px;
+        display: inline-block;
+      }
+      display: block;
+    }
+    margin: 100px;
   }
 }
