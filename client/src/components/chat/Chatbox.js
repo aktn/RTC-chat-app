@@ -32,7 +32,7 @@ const Chatbox = props => {
   };
 
   const emojiKeyboard = props.showEmoji ? (
-    <div className="test">
+    <div className="positionBoard">
       <EmojiPicker onEmojiClick={handleEmoji} />
     </div>
   ) : (
@@ -46,8 +46,7 @@ const Chatbox = props => {
   );
 
   const handleImage = e => {
-    console.log(e.target.files);
-    const img = e.target.files;
+    const img = e.target.files[0];
     props.handleImageUpload(img);
   };
 
@@ -58,6 +57,7 @@ const Chatbox = props => {
         onKeyDown={messageHandler}
         value={props.message}
         placeholder="Type here ..."
+        autoFocus
       />
       <span className="emojiKeyboard" onClick={props.toggleEmoji}>
         {"😍"}
@@ -66,7 +66,14 @@ const Chatbox = props => {
       <span className="gifSelection" onClick={props.toggleGiphy}>
         {"Gif"}
       </span>
-      <input type="file" id="multi" onChange={handleImage} multiple />
+      <input
+        type="file"
+        id="file"
+        onChange={handleImage}
+        className="imgUpload"
+        size="20"
+      />
+      <label htmlFor="file">+</label>
       {giphySelection}
     </div>
   );

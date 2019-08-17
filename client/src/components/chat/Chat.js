@@ -160,15 +160,18 @@ class Chat extends Component {
   };
 
   handleImageUpload = e => {
-    console.log(e);
-    const data = {
-      id: Math.random(),
-      username: this.props.username,
-      message: e,
-      deleted: false,
-      edited: false
+    const reader = new FileReader();
+    reader.onload = event => {
+      const message = {};
+      message.id = Math.random();
+      message.username = this.props.username;
+      message.message = event.target.result;
+      message.deleted = false;
+      message.edited = false;
+      message.editing = false;
+      broadcastImage(message);
     };
-    broadcastImage(JSON.stringify(data));
+    reader.readAsDataURL(e);
   };
 
   render() {

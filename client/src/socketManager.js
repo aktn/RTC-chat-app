@@ -40,9 +40,9 @@ const broadcastImage = image => {
   socket.emit("send image", image);
 };
 
-const getImage = () => {
-  socket.on("uploaded image", data => {
-    console.log(data);
+const getImage = callback => {
+  socket.on("emit image", data => {
+    callback(data);
   });
 };
 

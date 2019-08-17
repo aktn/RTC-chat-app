@@ -11,7 +11,11 @@ const DisplayChat = props => {
   };
 
   let displayMessage;
-  if (!message.deleted) {
+  if (
+    !message.deleted &&
+    !message.message.match(/\b(http|https)?:\/\/\S+/gi) &&
+    !message.message.match("base64")
+  ) {
     displayMessage = (
       <label>
         <span>{message.username} : </span>
@@ -40,7 +44,7 @@ const DisplayChat = props => {
         {message.edited ? <span className="edited">Edited</span> : ""}
       </label>
     );
-  } else {
+  } else if (message.deleted) {
     displayMessage = (
       <label className="deleted">
         <span>{message.username} : </span>Deleted
@@ -50,16 +54,37 @@ const DisplayChat = props => {
 
   let displayExtraMedia;
   const checkGif = message.message && message.message.indexOf("giphy") > -1;
+
+  let displayImage;
+  if (message.message.match("base64")) {
+    displayImage = (
+      <>
+        <span>{message.username} : </span>{" "}
+        <img src={message.message} alt="image" />
+      </>
+    );
+  }
+
   if (checkGif) {
-    displayExtraMedia = <Gify message={message.message} />;
+    displayExtraMedia = (
+      <label>
+        <span>{message.username} : </span>
+        <Gify message={message.message} />
+      </label>
+    );
   } else {
-    displayExtraMedia = <LinksPreview link={message.message} />;
+    displayExtraMedia = (
+      <label>
+        <LinksPreview link={message.message} />
+      </label>
+    );
   }
 
   return (
     <div className="displayChat">
       <div className="displayChat__wrapper">
         {displayMessage}
+        {displayImage}
         {displayExtraMedia}
       </div>
     </div>
