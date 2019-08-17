@@ -36,6 +36,16 @@ const getEditedMessage = callback => {
   socket.on("updated message", message => callback(message));
 };
 
+const broadcastImage = image => {
+  socket.emit("send image", image);
+};
+
+const getImage = () => {
+  socket.on("uploaded image", data => {
+    console.log(data);
+  });
+};
+
 export {
   addNewUser,
   getParticipants,
@@ -44,5 +54,7 @@ export {
   broadcastEditedMessage,
   getCreatedMessage,
   getDeletedMessage,
-  getEditedMessage
+  getEditedMessage,
+  broadcastImage,
+  getImage
 };

@@ -9,7 +9,9 @@ import {
   broadcastEditedMessage,
   getCreatedMessage,
   getDeletedMessage,
-  getEditedMessage
+  getEditedMessage,
+  broadcastImage,
+  getImage
 } from "../../socketManager";
 import "./styles/Chat.scss";
 
@@ -44,14 +46,7 @@ class Chat extends Component {
         ...messages[objIndex],
         deleted: true
       };
-
-      this.setState(() => ({
-        messages: [
-          ...messages.slice(0, objIndex),
-          updatedObj,
-          ...messages.slice(objIndex + 1)
-        ]
-      }));
+      this.handleMessageState(updatedObj, objIndex);
     });
 
     getEditedMessage(data => {
@@ -63,15 +58,14 @@ class Chat extends Component {
         message: data.message,
         edited: true
       };
+      this.handleMessageState(updatedObj, objIndex);
+    });
 
-      this.setState({
-        messages: [
-          ...messages.slice(0, objIndex),
-          updatedObj,
-          ...messages.slice(objIndex + 1)
-        ]
-      });
-      console.log(this.state.messages);
+    getImage(image => {
+      console.log(image);
+      this.setState(() => ({
+        messages: [...this.state.messages, image]
+      }));
     });
   }
 
@@ -87,7 +81,8 @@ class Chat extends Component {
       username: this.props.username,
       message: message,
       deleted: false,
-      edited: false
+      edited: false,
+      editing: false
     };
     braodcastCreatedMessage(
       JSON.stringify(data),
@@ -101,16 +96,19 @@ class Chat extends Component {
     broadcastDeletedMessage(messageID);
   };
 
-  handleEditing = () => {
-    this.setState({
-      editingMessage: !this.state.editingMessage
-    });
-    console.log(this.state.editingMessage);
+  handleEditing = ID => {
+    const { messages } = this.state;
+    const objIndex = this.state.messages.findIndex(msg => msg.id === ID);
+    const updatedObj = {
+      ...messages[objIndex],
+      editing: true
+    };
+
+    this.handleMessageState(updatedObj, objIndex);
   };
 
   editMessage = (event, id) => {
     const message = event.target.value;
-    console.log("Edit" + message + id);
     const { messages } = this.state;
 
     const objIndex = messages.findIndex(msg => msg.id === id);
@@ -119,13 +117,7 @@ class Chat extends Component {
       message: message
     };
 
-    this.setState({
-      messages: [
-        ...messages.slice(0, objIndex),
-        updatedObj,
-        ...messages.slice(objIndex + 1)
-      ]
-    });
+    this.handleMessageState(updatedObj, objIndex);
   };
 
   handleUpdate = (e, id) => {
@@ -133,10 +125,26 @@ class Chat extends Component {
       const message = e.target.value;
       if (!message) return;
       broadcastEditedMessage(id, message);
-      this.setState({
-        editingMessage: !this.state.editingMessage
-      });
+
+      const { messages } = this.state;
+      const objIndex = messages.findIndex(msg => msg.id === id);
+      const updatedObj = {
+        ...messages[objIndex],
+        editing: !messages[objIndex].editing
+      };
+      this.handleMessageState(updatedObj, objIndex);
     }
+  };
+
+  handleMessageState = (updatedObj, objIndex) => {
+    const { messages } = this.state;
+    this.setState({
+      messages: [
+        ...messages.slice(0, objIndex),
+        updatedObj,
+        ...messages.slice(objIndex + 1)
+      ]
+    });
   };
 
   handleEmojiState = () => {
@@ -151,6 +159,18 @@ class Chat extends Component {
     });
   };
 
+  handleImageUpload = e => {
+    console.log(e);
+    const data = {
+      id: Math.random(),
+      username: this.props.username,
+      message: e,
+      deleted: false,
+      edited: false
+    };
+    broadcastImage(JSON.stringify(data));
+  };
+
   render() {
     return (
       <div className="chat">
@@ -163,8 +183,7 @@ class Chat extends Component {
                 currentUser={this.props.username}
                 key={index}
                 delete={this.deleteMessage}
-                editingStatus={this.state.editingMessage}
-                handleEditing={this.handleEditing}
+                handleEditing={() => this.handleEditing(message.id)}
                 changedValue={event => this.editMessage(event, message.id)}
                 onPressEnter={event => this.handleUpdate(event, message.id)}
               />
@@ -178,6 +197,7 @@ class Chat extends Component {
             toggleEmoji={this.handleEmojiState}
             showGiphy={this.state.showGiphy}
             toggleGiphy={this.handleGiphyState}
+            handleImageUpload={this.handleImageUpload}
           />
         </div>
       </div>

@@ -45,6 +45,12 @@ const Chatbox = props => {
     ""
   );
 
+  const handleImage = e => {
+    console.log(e.target.files);
+    const img = e.target.files;
+    props.handleImageUpload(img);
+  };
+
   return (
     <div className="chatbox">
       <input
@@ -60,6 +66,7 @@ const Chatbox = props => {
       <span className="gifSelection" onClick={props.toggleGiphy}>
         {"Gif"}
       </span>
+      <input type="file" id="multi" onChange={handleImage} multiple />
       {giphySelection}
     </div>
   );

@@ -37,6 +37,11 @@ io.on("connection", client => {
     console.log("Disconnected");
   });
 
+  client.on("send image", data => {
+    const message = JSON.parse(data);
+    io.emit("uploaded image", { image: true, buffer: message.message });
+  });
+
   updateUsernames = () => {
     io.emit("get users", users);
     console.log(users);

@@ -4,7 +4,7 @@ import LinksPreview from "../bonus/LinksPreview";
 import "./styles/DisplayChat.scss";
 
 const DisplayChat = props => {
-  const { message, currentUser, editingStatus } = props;
+  const { message, currentUser } = props;
 
   const handleDoubleClick = () => {
     props.handleEditing();
@@ -16,15 +16,13 @@ const DisplayChat = props => {
       <label>
         <span>{message.username} : </span>
         <label onDoubleClick={handleDoubleClick} className="message">
-          {editingStatus ? (
+          {message.editing ? (
             <input
               type="text"
               value={message.message}
               onChange={props.changedValue}
               onKeyDown={props.onPressEnter}
             />
-          ) : message.message.indexOf("https") > -1 ? (
-            ""
           ) : (
             message.message
           )}
