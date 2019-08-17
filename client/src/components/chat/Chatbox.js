@@ -35,6 +35,12 @@ const Chatbox = props => {
     ""
   );
 
+  const giphySelection = props.showGiphy ? (
+    <Picker onSelected={handleGiphy} />
+  ) : (
+    ""
+  );
+
   return (
     <div>
       <input
@@ -45,7 +51,8 @@ const Chatbox = props => {
       />
       <span onClick={props.toggleEmoji}>{"😍"}</span>
       {emojiKeyboard}
-      <Picker onSelected={handleGiphy} />
+      <span onClick={props.toggleGiphy}>{"Gif"}</span>
+      {giphySelection}
     </div>
   );
 };

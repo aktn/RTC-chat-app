@@ -11,6 +11,7 @@ import {
   getDeletedMessage,
   getEditedMessage
 } from "../../socketManager";
+import "./styles/Chat.scss";
 
 class Chat extends Component {
   state = {
@@ -18,7 +19,8 @@ class Chat extends Component {
     messages: [],
     text: "",
     editingMessage: false,
-    showEmoji: false
+    showEmoji: false,
+    showGiphy: false
   };
 
   componentDidMount() {
@@ -140,29 +142,39 @@ class Chat extends Component {
     });
   };
 
+  handleGiphyState = () => {
+    this.setState({
+      showGiphy: !this.state.showGiphy
+    });
+  };
+
   render() {
     return (
-      <div>
+      <div className="chat">
         <Participants participants={this.state.users} />
-        {this.state.messages.map((message, index) => (
-          <DisplayChat
-            message={message}
-            currentUser={this.props.username}
-            key={index}
-            delete={this.deleteMessage}
-            editingStatus={this.state.editingMessage}
-            handleEditing={this.handleEditing}
-            changedValue={event => this.editMessage(event, message.id)}
-            onPressEnter={event => this.handleUpdate(event, message.id)}
+        <div className="chat__panel">
+          {this.state.messages.map((message, index) => (
+            <DisplayChat
+              message={message}
+              currentUser={this.props.username}
+              key={index}
+              delete={this.deleteMessage}
+              editingStatus={this.state.editingMessage}
+              handleEditing={this.handleEditing}
+              changedValue={event => this.editMessage(event, message.id)}
+              onPressEnter={event => this.handleUpdate(event, message.id)}
+            />
+          ))}
+          <Chatbox
+            emitMessage={this.createMessage}
+            message={this.state.text}
+            controlMessage={this.handleMessage}
+            showEmoji={this.state.showEmoji}
+            toggleEmoji={this.handleEmojiState}
+            showGiphy={this.state.showGiphy}
+            toggleGiphy={this.handleGiphyState}
           />
-        ))}
-        <Chatbox
-          emitMessage={this.createMessage}
-          message={this.state.text}
-          controlMessage={this.handleMessage}
-          showEmoji={this.state.showEmoji}
-          toggleEmoji={this.handleEmojiState}
-        />
+        </div>
       </div>
     );
   }

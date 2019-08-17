@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./NewUser.scss";
 
 class NewUser extends Component {
   createUser = e => {
@@ -12,8 +13,8 @@ class NewUser extends Component {
       <div className="joinChat">
         <form onSubmit={this.createUser}>
           <h3>Got a nick name?</h3>
-          <input type="text" className="name" id="name" />
-          <input type="submit" className="join" value="Join" />
+          <input type="text" className="joinChat__name" autoFocus id="name" />
+          <input type="submit" className="joinChat__join" value="Join" />
         </form>
       </div>
     );

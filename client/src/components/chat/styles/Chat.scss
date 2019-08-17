@@ -1,0 +1,8 @@
+.chat {
+  display: flex;
+  flex-direction: row;
+  &__panel {
+    flex: 2;
+    background-color: red;
+  }
+}
