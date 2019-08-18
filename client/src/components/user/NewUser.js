@@ -5,6 +5,7 @@ class NewUser extends Component {
   createUser = e => {
     e.preventDefault();
     const username = e.target.name.value;
+    if (!username) return;
     this.props.emitUser(username);
   };
 

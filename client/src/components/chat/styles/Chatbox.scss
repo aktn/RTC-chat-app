@@ -3,6 +3,14 @@
   justify-content: flex-start;
   align-items: flex-end;
   padding-left: 10px;
+  position: relative;
+  flex-direction: row;
+  .input {
+    flex: 2;
+    @media screen and (min-width: 768px) {
+      flex: 3;
+    }
+  }
   input {
     border: 0;
     font-size: 15px;
@@ -20,51 +28,36 @@
       width: 80%;
     }
   }
+  .keyboard {
+    flex: 1;
+    padding-bottom: 20px;
+  }
   .emojiKeyboard {
-    position: absolute;
-    top: 675px;
-    right: 50px;
+    padding: 10px;
     cursor: pointer;
-    @media screen and (min-width: 768px) {
-      top: 545px;
-      right: 120px;
-    }
   }
   .imgUpload {
     display: none;
   }
   label {
-    position: absolute;
     color: grey;
-    top: 665px;
-    right: 80px;
+    padding: 10px;
     font-size: 30px;
-    @media screen and (min-width: 768px) {
-      top: 533px;
-      right: 150px;
-    }
   }
   .gifSelection {
-    position: absolute;
-    top: 675px;
-    right: 20px;
     padding: 1px;
     color: grey;
     font-size: 11px;
     border: 1px solid grey;
     cursor: pointer;
-    @media screen and (min-width: 768px) {
-      top: 545px;
-      right: 90px;
-    }
+    padding: 10px;
   }
   .positionBoard {
     position: absolute;
-    top: 300px;
-    right: 30px;
+    top: -350px;
+    right: 10px;
     @media screen and (min-width: 768px) {
-      top: 170px;
-      right: 100px;
+      right: 150px;
     }
   }
 }

@@ -13,9 +13,9 @@ const Chatbox = props => {
 
   const messageHandler = event => {
     if (event.keyCode === 13) {
+      event.preventDefault();
       let value = event.target.value;
       if (!value) return;
-      event.preventDefault();
       props.emitMessage(value);
       value = "";
     }
@@ -40,7 +40,9 @@ const Chatbox = props => {
   );
 
   const giphySelection = props.showGiphy ? (
-    <Picker onSelected={handleGiphy} />
+    <div className="positionBoard">
+      <Picker className="test" onSelected={handleGiphy} />
+    </div>
   ) : (
     ""
   );
@@ -52,29 +54,33 @@ const Chatbox = props => {
 
   return (
     <div className="chatbox">
-      <input
-        onChange={handleChange}
-        onKeyDown={messageHandler}
-        value={props.message}
-        placeholder="Type here ..."
-        autoFocus
-      />
-      <span className="emojiKeyboard" onClick={props.toggleEmoji}>
-        {"😍"}
-      </span>
-      {emojiKeyboard}
-      <span className="gifSelection" onClick={props.toggleGiphy}>
-        {"Gif"}
-      </span>
-      <input
-        type="file"
-        id="file"
-        onChange={handleImage}
-        className="imgUpload"
-        size="20"
-      />
-      <label htmlFor="file">+</label>
-      {giphySelection}
+      <div className="input">
+        <input
+          onChange={handleChange}
+          onKeyDown={messageHandler}
+          value={props.message}
+          placeholder="Type here ..."
+          autoFocus
+        />
+      </div>
+      <div className="keyboard">
+        <span className="emojiKeyboard" onClick={props.toggleEmoji}>
+          {"😍"}
+        </span>
+        {emojiKeyboard}
+        <span className="gifSelection" onClick={props.toggleGiphy}>
+          {"Gif"}
+        </span>
+        <input
+          type="file"
+          id="file"
+          onChange={handleImage}
+          className="imgUpload"
+          size="20"
+        />
+        <label htmlFor="file">+</label>
+        {giphySelection}
+      </div>
     </div>
   );
 };
