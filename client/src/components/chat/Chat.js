@@ -96,6 +96,7 @@ class Chat extends Component {
     broadcastDeletedMessage(messageID);
   };
 
+  // Get message ID to be edited & change its editing status
   handleEditing = ID => {
     const { messages } = this.state;
     const objIndex = this.state.messages.findIndex(msg => msg.id === ID);
@@ -103,10 +104,11 @@ class Chat extends Component {
       ...messages[objIndex],
       editing: true
     };
-
+    // Call the setState
     this.handleMessageState(updatedObj, objIndex);
   };
 
+  // Control specific message's value to be edited
   editMessage = (event, id) => {
     const message = event.target.value;
     const { messages } = this.state;
@@ -116,10 +118,11 @@ class Chat extends Component {
       ...messages[objIndex],
       message: message
     };
-
+    // Call the setState
     this.handleMessageState(updatedObj, objIndex);
   };
 
+  // Update the message value after being hit enter
   handleUpdate = (e, id) => {
     if (e.keyCode == 13) {
       const message = e.target.value;
@@ -132,10 +135,12 @@ class Chat extends Component {
         ...messages[objIndex],
         editing: !messages[objIndex].editing
       };
+      // Call the setState
       this.handleMessageState(updatedObj, objIndex);
     }
   };
 
+  // Manage the message state here
   handleMessageState = (updatedObj, objIndex) => {
     const { messages } = this.state;
     this.setState({
