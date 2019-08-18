@@ -54,6 +54,9 @@ const DisplayChat = props => {
 
   let displayExtraMedia;
   const checkGif = message.message && message.message.indexOf("giphy") > -1;
+  const checkUrl =
+    (message.message && message.message.match(/\b(http|https)?:\/\/\S+/gi)) ||
+    [];
 
   let displayImage;
   if (message.message.match("base64")) {
@@ -72,10 +75,13 @@ const DisplayChat = props => {
         <Gify message={message.message} />
       </label>
     );
-  } else {
+  } else if (checkUrl) {
     displayExtraMedia = (
       <label>
-        <LinksPreview link={message.message} />
+        <span>{message.username} : </span>
+        <label className="message">
+          <LinksPreview link={message.message} />
+        </label>
       </label>
     );
   }

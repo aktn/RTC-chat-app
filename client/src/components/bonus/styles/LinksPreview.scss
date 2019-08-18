@@ -1,0 +1,17 @@
+.linksPreview {
+  display: inline-block;
+  iframe {
+    display: none;
+  }
+  a {
+    color: #fff;
+    font-family: var(--main-font);
+    text-decoration: none;
+  }
+  a:hover + iframe {
+    display: block;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+  }
+}
